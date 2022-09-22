@@ -67,7 +67,7 @@ export const ProductsWrapper = styled.div`
     padding: 2rem;
 `
 
-export const Cart = styled.div`
+export const CartWrapper = styled.div`
     display: flex;
     flex-direction: column;
     background-color: #F6F6F6;
@@ -149,7 +149,7 @@ export const CardButton = styled.div`
 export const QuantityButtonGroup = styled.div`
     display: flex;
     flex-direction: row;
-    flex-grow: 4;
+    flex-grow: 2;
     align-items: center;
 `;
 

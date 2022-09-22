@@ -1,7 +1,7 @@
 import React from 'react'; // we need this to make JSX compile
 import { useSelector } from 'react-redux';
 import { AvailableProducts } from './AvailableProduct';
-import { AvailableProductCard, Cart, Container, Description, Header, ImageContainer, ProductImage, ProductInfo, SubHeader } from './Basket.styled';
+import { AvailableProductCard, Container, Description, Header, ImageContainer, ProductImage, ProductInfo, SubHeader } from './Basket.styled';
 import { selectBasket } from './basketSlice';
 import { CartProducts } from './CartProducts';
  

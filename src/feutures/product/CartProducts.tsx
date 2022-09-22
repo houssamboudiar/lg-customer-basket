@@ -1,7 +1,7 @@
 import React from 'react'; // we need this to make JSX compile
 import { useSelector } from 'react-redux';
 import { store } from '../../store';
-import { ActionText, AddToCartButton, AvailableProductCard, CardButton, CardHeaderRow, CartProductCard, Description, Header, ImageContainer, Label, PriceTag, PricingColumn, ProductImage, ProductInfo, ProductsWrapper, QuantityButton, QuantityButtonGroup, SubHeader, Total } from './Basket.styled';
+import { ActionText, AddToCartButton, AvailableProductCard, CardButton, CardHeaderRow, CartProductCard, CartWrapper, Description, Header, ImageContainer, Label, PriceTag, PricingColumn, ProductImage, ProductInfo, ProductsWrapper, QuantityButton, QuantityButtonGroup, SubHeader, Total } from './Basket.styled';
 import { addProductCart, decreaseProductQty, increaseProductQty, Product, selectBasket } from './basketSlice';
 
 interface props{
@@ -13,7 +13,7 @@ export const CartProducts = ({ products }: props) => {
                                         useSelector(selectBasket).subTotal, 
                                         useSelector(selectBasket).discount];
     return (
-        <ProductsWrapper>
+        <CartWrapper>
             <Header>Cart</Header>
             {
                 products.map((product, index)=>{
@@ -48,6 +48,6 @@ export const CartProducts = ({ products }: props) => {
                 <Total > {discount.toFixed(2)}</Total>
                 <Label > Total</Label>
                 <Total > {total.toFixed(2)}</Total>
-        </ProductsWrapper>
+        </CartWrapper>
     )
 }
