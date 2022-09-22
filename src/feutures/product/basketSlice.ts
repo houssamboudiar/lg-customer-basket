@@ -10,6 +10,7 @@ export interface Product {
   description: string;
   cost: number;
   qty: number;
+  qtyCost: number;
 }
 
 // Define a type for the slice state
@@ -32,7 +33,8 @@ const initialState: BasketState = {
       description: "made in paris and destinated to the whole world.", 
       cost: 0.80,
       img: '/src/assets/butter.jpg', 
-      qty: 0, 
+      qty: 0,
+      qtyCost: 0,
     }, 
     {
       id: 1, 
@@ -41,6 +43,7 @@ const initialState: BasketState = {
       cost: 1.15,
       img: '/src/assets/milk.jpg', 
       qty: 0,
+      qtyCost: 0,
     }, 
     {
       id: 2, 
@@ -49,6 +52,7 @@ const initialState: BasketState = {
       cost: 1.00,
       img: '/src/assets/bread.jpg', 
       qty: 0,
+      qtyCost: 0,
     }],
     cartProducts: [],
     subTotal: 0,
@@ -67,10 +71,11 @@ const computeBreadDiscount = (products: Product[], oldBreadDiscount: number) => 
 
   if (butterQty >= 2) {
     let discountedBread = Math.trunc(butterQty / 2);
+
     if(breadQty >= discountedBread){
       breadDiscount = discountedBread * BREAD_DISCOUNT;
     }else{
-      breadDiscount +=  oldBreadDiscount;
+      (products.find((p) => p.id === 2) ) ? breadDiscount +=  oldBreadDiscount : breadDiscount = 0;
     }
   }
   return breadDiscount;
@@ -82,12 +87,12 @@ const computeMilkDiscount = (products: Product[], oldDiscount: number) => {
   let milkDiscount = 0;
 
   let milkQty = products.find((p) => p.id === 1)?.qty ?? 0;
+  let discountedMilk = Math.trunc(milkQty / 4);
 
-  if (milkQty >= 4) {
-    let discountedMilk = Math.trunc(milkQty / 4);
+  if (milkQty >= discountedMilk) {
     milkDiscount = discountedMilk * MILK_DISCOUNT;
   }else{
-    milkDiscount += oldDiscount;
+    (products.find((p) => p.id === 1) ) ? milkDiscount += oldDiscount : milkDiscount += 0;
   }
 
   return milkDiscount;
@@ -112,12 +117,15 @@ export const basketSlice = createSlice({
     addProductCart(state, action) {
       if (state.cartProducts.find((p) => p.id === action.payload.id)){
           state.cartProducts.map((p) => {
-            if(p.id === action.payload.id) p.qty++;
+            if(p.id === action.payload.id) {
+              p.qty++
+              p.qtyCost = p.cost*p.qty;
+            };
             return p;
           });
       }
       else{
-        state.cartProducts.push({...action.payload, qty:1});
+        state.cartProducts.push({...action.payload, qty:1, qtyCost:action.payload.cost});
       }
 
       state.subTotal = computeCartSubTotal(state.cartProducts);
@@ -128,7 +136,10 @@ export const basketSlice = createSlice({
     },
     increaseProductQty(state, action) {
       state.cartProducts.map((p) => {
-        if(p.id === action.payload.id) p.qty++;
+        if(p.id === action.payload.id) {
+          p.qty++
+          p.qtyCost = p.cost*p.qty;
+        };
         return p;
       });
       state.subTotal = computeCartSubTotal(state.cartProducts);
@@ -143,9 +154,13 @@ export const basketSlice = createSlice({
         })
 
         if(state.cartProducts[index].id === action.payload.id && state.cartProducts[index].qty > 1)
-          state.cartProducts[index].qty--;
+          {
+            state.cartProducts[index].qty--;
+            state.cartProducts[index].qtyCost = state.cartProducts[index].cost
+                                                *state.cartProducts[index].qty;
+          }
         else
-          state.cartProducts.splice(index, 1); 
+          {state.cartProducts.splice(index, 1); }
 
         state.subTotal = computeCartSubTotal(state.cartProducts);
         state.breadDiscount = computeBreadDiscount(state.cartProducts, state.breadDiscount);

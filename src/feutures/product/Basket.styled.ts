@@ -47,6 +47,14 @@ export const PriceTag = styled.h1`
     margin: 0rem 0rem;
 `
 
+export const DiscountTag = styled.h1`
+    font-family: "Poppins", sans-serif;
+    font-size: 25px;
+    color: red;
+    justify-content: flex-end;
+    margin: 0rem 0rem;
+`
+
 export const Description = styled.p`
     font-family: "Poppins", sans-serif;
     font-weight: 300;
@@ -135,7 +143,7 @@ export const PricingColumn = styled.div`
     flex-direction: column;
     flex-grow: 4;
     align-items: center;
-    justify-content: center
+    justify-content: center;
 `;
 
 export const CardButton = styled.div`
@@ -213,4 +221,10 @@ export const QuantityButton = styled.button`
     background: #09223b;
     color: rgb(255, 255, 255, .7);
     }
+`;
+
+export const StatsWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
 `;

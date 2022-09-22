@@ -1,7 +1,7 @@
 import React from 'react'; // we need this to make JSX compile
 import { useSelector } from 'react-redux';
 import { store } from '../../store';
-import { ActionText, AddToCartButton, AvailableProductCard, CardButton, CardHeaderRow, CartProductCard, CartWrapper, Description, Header, ImageContainer, Label, PriceTag, PricingColumn, ProductImage, ProductInfo, ProductsWrapper, QuantityButton, QuantityButtonGroup, SubHeader, Total } from './Basket.styled';
+import { ActionText, AddToCartButton, AvailableProductCard, CardButton, CardHeaderRow, CartProductCard, CartWrapper, Description, DiscountTag, Header, ImageContainer, Label, PriceTag, PricingColumn, ProductImage, ProductInfo, ProductsWrapper, QuantityButton, QuantityButtonGroup, StatsWrapper, SubHeader, Total } from './Basket.styled';
 import { addProductCart, decreaseProductQty, increaseProductQty, Product, selectBasket } from './basketSlice';
 
 interface props{
@@ -9,9 +9,11 @@ interface props{
 }
 
 export const CartProducts = ({ products }: props) => {
-    const [total,subTotal,discount] = [ useSelector(selectBasket).total, 
-                                        useSelector(selectBasket).subTotal, 
-                                        useSelector(selectBasket).discount];
+    const [total,subTotal,milkDiscount,breadDiscount,discount] = [  useSelector(selectBasket).total, 
+                                                                    useSelector(selectBasket).subTotal, 
+                                                                    useSelector(selectBasket).milkDiscount,
+                                                                    useSelector(selectBasket).breadDiscount,
+                                                                    useSelector(selectBasket).discount];
     return (
         <CartWrapper>
             <Header>Cart</Header>
@@ -36,18 +38,22 @@ export const CartProducts = ({ products }: props) => {
                             </QuantityButtonGroup>
                         </ProductInfo>
                         <PricingColumn >
-                                <PriceTag > £{product.cost}</PriceTag>
+                                <PriceTag > £{product.qtyCost.toFixed(2)}</PriceTag>
+                                {(milkDiscount!=0 && product.name == "Fresh Suiss milk") && <DiscountTag> <s>£{milkDiscount.toFixed(2)}</s></DiscountTag>}
+                                {(breadDiscount!=0 && product.name == "Whole French bread") && <DiscountTag> <s>£{breadDiscount.toFixed(2)}</s></DiscountTag>}
                         </PricingColumn>
                     </CartProductCard>
                     )
                 })
             }
+            <StatsWrapper>
                 <Label > Subtotal</Label>
-                <Total > {subTotal.toFixed(2)}</Total>
+                <Total > £{subTotal.toFixed(2)}</Total>
                 <Label > Discount</Label>
-                <Total > {discount.toFixed(2)}</Total>
+                <Total > £{discount.toFixed(2)}</Total>
                 <Label > Total</Label>
-                <Total > {total.toFixed(2)}</Total>
+                <Total > £{total.toFixed(2)}</Total>
+            </StatsWrapper>
         </CartWrapper>
     )
 }
