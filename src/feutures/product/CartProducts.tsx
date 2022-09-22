@@ -1,8 +1,11 @@
-import React from 'react'; // we need this to make JSX compile
-import { useSelector } from 'react-redux';
 import { store } from '../../store';
-import { ActionText, AddToCartButton, AvailableProductCard, CardButton, CardHeaderRow, CartProductCard, CartWrapper, Description, DiscountTag, Header, ImageContainer, Label, PriceTag, PricingColumn, ProductImage, ProductInfo, ProductsWrapper, QuantityButton, QuantityButtonGroup, StatsWrapper, SubHeader, Total } from './Basket.styled';
-import { addProductCart, decreaseProductQty, increaseProductQty, Product, selectBasket } from './basketSlice';
+import { useSelector } from 'react-redux';
+
+import { ActionText, CartProductCard, CartWrapper, DiscountTag, Header, ImageContainer, Label, 
+        PriceTag, PricingColumn, ProductImage, ProductInfo, QuantityButton, QuantityButtonGroup, 
+        StatsWrapper, SubHeader, Total } from './Basket.styled';
+        
+import { decreaseProductQty, increaseProductQty, Product, selectBasket } from './basketSlice';
 
 interface props{
     products: Product[];

@@ -1,9 +1,11 @@
-import { findIconDefinition, IconDefinition, IconLookup } from '@fortawesome/fontawesome-svg-core';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { AvailableProductCard, ProductsWrapper, Description, Header, ImageContainer, ProductImage, ProductInfo, SubHeader, AddToCartButton, PriceTag, Rating, CardButton, CardHeaderRow } from './Basket.styled';
-import basketSlice, { addProductCart, Product } from './basketSlice';
-import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import { store } from '../../store';
+
+import { AvailableProductCard, ProductsWrapper, Description, Header, 
+        ImageContainer, ProductImage, ProductInfo, SubHeader, AddToCartButton, 
+        PriceTag, Rating, CardButton, CardHeaderRow } from './Basket.styled';
+        
+import { addProductCart, Product } from './basketSlice';
+import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 
 interface props{
     products: Product[];
