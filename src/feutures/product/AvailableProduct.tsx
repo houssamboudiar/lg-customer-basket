@@ -20,7 +20,7 @@ export const AvailableProducts = ({ products }: props) => {
                         <ImageContainer>
                             <ProductImage image={product.img} />
                         </ImageContainer>
-                        <ProductInfo>
+                        <ProductInfo className="align-right">
                             <CardHeaderRow>
                                 <SubHeader>{product.name}</SubHeader>
                                 <Rating>

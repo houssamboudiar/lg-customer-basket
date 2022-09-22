@@ -14,6 +14,9 @@ export interface Product {
 interface BasketState {
   availableProducts: Product[],
   cartProducts: Product[],
+  total: number,
+  subTotal: number,
+  discount: number,
 }
 
 // Define the initial state using that type
@@ -43,7 +46,23 @@ const initialState: BasketState = {
       img: '/src/assets/bread.jpg', 
       qty: 1,
     }],
-    cartProducts: []
+    cartProducts: [],
+    total: 0,
+    subTotal: 0,
+    discount: 0,
+}
+
+const computeCartTotal = (products: Product[]) => {
+  let total = 0;
+  if (products.length === 0) {
+      return total;
+  }
+  products.map((product) => {
+      total =
+          total + product.cost * product.qty;
+      return product;
+  });
+  return total;
 }
 
 export const basketSlice = createSlice({
@@ -52,44 +71,37 @@ export const basketSlice = createSlice({
   reducers: {
     addProductCart(state, action) {
       if (state.cartProducts.find((p) => p.id === action.payload.id)){
-          state.cartProducts.find((p) => {
-            p.qty++;
-            return (p.id === action.payload.id)
+          state.cartProducts.map((p) => {
+            if(p.id === action.payload.id) p.qty++;
+            return p;
           });
       }
       else{
           state.cartProducts.push(action.payload);
       }
+      state.total = computeCartTotal(state.cartProducts);
     },
-    increaseProductQte(state, action) {
-      state.cartProducts.find((p) => {
-        p.qty++;
-        return (p.id === action.payload.id)
+    increaseProductQty(state, action) {
+      state.cartProducts.map((p) => {
+        if(p.id === action.payload.id) p.qty++;
+        return p;
       });
+      state.total = computeCartTotal(state.cartProducts);
     },
-    decreaseProductQte(state, action) {
-        const pr = state.cartProducts.find((p) => p.id === action.payload.id) || { qty : 0 };
-        if (pr.qty > 0) {
-          state.cartProducts.find((p) => {
-            p.qty--;
-            return (p.id === action.payload.id)
-          });
-        };
+    decreaseProductQty(state, action) {
+        let index = state.cartProducts.findIndex(function(o){
+          return o.id === action.payload.id;
+        })
+        if(state.cartProducts[index].id === action.payload.id && state.cartProducts[index].qty > 1)
+          state.cartProducts[index].qty--;
+        else
+          state.cartProducts.splice(index, 1); 
+        state.total = computeCartTotal(state.cartProducts);         
     },
-    // increment: state => {
-    //   state.value += 1
-    // },
-    // decrement: state => {
-    //   state.value -= 1
-    // },
-    // // Use the PayloadAction type to declare the contents of `action.payload`
-    // incrementByAmount: (state, action: PayloadAction<number>) => {
-    //   state.value += action.payload
-    // }
   }
 })
 
-export const { addProductCart } = basketSlice.actions
+export const { addProductCart, increaseProductQty, decreaseProductQty } = basketSlice.actions
 
 export const selectBasket = (state: RootState) => state.basket
 
