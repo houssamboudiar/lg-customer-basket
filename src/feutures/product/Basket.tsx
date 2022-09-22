@@ -1,16 +1,19 @@
 import React from 'react'; // we need this to make JSX compile
-import styled from 'styled-components';
-
-export const Container = styled.div`
-    display: flex;
-    justify-content:space-evenly;
-    align-items: center;
-`
+import { useSelector } from 'react-redux';
+import { AvailableProducts } from './AvailableProduct';
+import { AvailableProductCard, Cart, Container, Description, Header, ImageContainer, ProductImage, ProductInfo, SubHeader } from './Basket.styled';
+import { selectBasket } from './basketSlice';
+import { CartProducts } from './CartProducts';
  
 export const Basket = () => {
+
+  const availableProducts = useSelector(selectBasket).availableProducts;
+  const cartProducts = useSelector(selectBasket).cartProducts;
+
   return (
     <Container>
-      <h1>Basket Component</h1>
+      <AvailableProducts products={availableProducts} />
+      <CartProducts products={cartProducts} />
     </Container>
   )
 }
